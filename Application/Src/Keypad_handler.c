@@ -5,7 +5,12 @@
  *      Author: Nikhil
  */
 #include "main.h"
+
+/*Common Layer headers*/
 #include "Gpio_com.h"
+#include "Timer_com.h"
+
+/*Application Layer headers*/
 #include "keypad_handler.h"
 
 int8_t row, col;
@@ -21,7 +26,6 @@ uint8_t Keypad_Handler(void){
 
 	return KEYPAD_GetKey();
 
-
 }
 
 
@@ -36,7 +40,7 @@ char KEYPAD_GetKey(void)
 
         if(col != -1)
         {
-            HAL_Delay(20);      // Debounce
+        	delay_ms(20);      //Debounce
 
             while(KEYPAD_ReadColumn() != -1);
 

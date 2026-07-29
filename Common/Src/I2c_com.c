@@ -4,8 +4,15 @@
  *  Created on: Jul 28, 2026
  *      Author: Nikhil
  */
-#include "I2c_com.h"
+
 #include "main.h"
+
+/*Application Layer headers*/
+
+/*Common Layer headers*/
+#include "I2c_com.h"
+
+
 i2c_handletypedef hi2c1;
 
 void MY_I2C1_Init(void)

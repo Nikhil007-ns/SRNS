@@ -6,9 +6,43 @@
  */
 
 #include "main.h"
+
+/*Application Layer headers*/
+
+/*Common Layer headers*/
 #include "Uart_com.h"
+
+
 uart_handletypedef huart1;
 uart_handletypedef huart2;
+
+
+MY_StatusTypeDef UART2_Transmit(uart_handletypedef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout)
+{
+	return HAL_UART_Transmit(huart, pData, Size, Timeout);
+
+}
+
+
+MY_StatusTypeDef UART2_Receive(uart_handletypedef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout)
+{
+	return HAL_UART_Transmit(huart, pData, Size, Timeout);
+
+}
+
+
+MY_StatusTypeDef UART1_Transmit(uart_handletypedef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout)
+{
+	return HAL_UART_Transmit(huart, pData, Size, Timeout);
+
+}
+
+
+MY_StatusTypeDef UART1_Receive(uart_handletypedef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout)
+{
+	return HAL_UART_Transmit(huart, pData, Size, Timeout);
+
+}
 
 void MY_USART1_UART_Init(void)
 {

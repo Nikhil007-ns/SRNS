@@ -45,10 +45,19 @@ typedef enum
 }gpio_pinstate;
 
 
+typedef enum
+{
+  hal_OK       = 0x00U,
+  hal_ERROR    = 0x01U,
+  hal_BUSY     = 0x02U,
+  hal_TIMEOUT  = 0x03U
+} hal_statustypedef;
+
+
+
 
 
 typedef GPIO_TypeDef      gpio_typedef;
-
 
 
 gpio_pinstate MY_GPIO_ReadPin(gpio_typedef* GPIOx, uint16_t GPIO_Pin);

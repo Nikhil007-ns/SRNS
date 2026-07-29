@@ -4,7 +4,13 @@
  *  Created on: Jul 28, 2026
  *      Author: Nikhil
  */
+
 #include "main.h"
+
+
+/*Application Layer headers*/
+
+/*Common Layer headers*/
 #include "Gpio_com.h"
 
 gpio_pinstate MY_GPIO_ReadPin(gpio_typedef* GPIOx, uint16_t GPIO_Pin)
@@ -21,6 +27,8 @@ void MY_GPIO_WritePin(gpio_typedef* GPIOx, uint16_t GPIO_Pin, gpio_pinstate PinS
 
 }
 
+
+
 void MY_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -34,11 +42,11 @@ void MY_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, gpio_pin_reset);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_4|GPIO_PIN_5
-                          |GPIO_PIN_6, GPIO_PIN_RESET);
+                          |GPIO_PIN_6, gpio_pin_reset);
 
   /*Configure GPIO pin : PC0 */
   GPIO_InitStruct.Pin = GPIO_PIN_0;
