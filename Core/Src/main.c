@@ -24,6 +24,7 @@
 #include "I2c_com.h"
 #include "Uart_com.h"
 #include "Gpio_com.h"
+#include "SRNS.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,6 +105,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  SRNS();
   }
   /* USER CODE END 3 */
 }

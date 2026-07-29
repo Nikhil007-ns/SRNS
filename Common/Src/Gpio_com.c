@@ -7,6 +7,19 @@
 #include "main.h"
 #include "Gpio_com.h"
 
+gpio_pinstate MY_GPIO_ReadPin(gpio_typedef* GPIOx, uint16_t GPIO_Pin)
+{
+
+		return HAL_GPIO_ReadPin(GPIOx, GPIO_Pin);
+
+}
+
+void MY_GPIO_WritePin(gpio_typedef* GPIOx, uint16_t GPIO_Pin, gpio_pinstate PinState)
+{
+
+	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, PinState);
+
+}
 
 void MY_GPIO_Init(void)
 {
