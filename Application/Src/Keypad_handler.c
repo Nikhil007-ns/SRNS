@@ -7,8 +7,8 @@
 #include "main.h"
 #include "Gpio_com.h"
 #include "keypad_handler.h"
-    int8_t row, col;
 
+int8_t row, col;
 	static const char keypad[4][4] =
 	{
 	    {'1','2','3','A'},
