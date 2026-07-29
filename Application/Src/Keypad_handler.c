@@ -17,9 +17,9 @@ int8_t row, col;
 	    {'*','0','#','D'}
 	};
 
-void Keypad_Handler(void){
+uint8_t Keypad_Handler(void){
 
-	KEYPAD_GetKey();
+	return KEYPAD_GetKey();
 
 
 }
@@ -46,7 +46,7 @@ char KEYPAD_GetKey(void)
 
     return 0;
 }
-static void KEYPAD_AllRowsLow(void)
+ void KEYPAD_AllRowsLow(void)
 {
     MY_GPIO_WritePin(ROW1_PORT, ROW1_PIN, gpio_pin_reset);
     MY_GPIO_WritePin(ROW2_PORT, ROW2_PIN, gpio_pin_reset);
@@ -55,7 +55,7 @@ static void KEYPAD_AllRowsLow(void)
 }
 
 
-static void KEYPAD_SelectRow(uint8_t row)
+ void KEYPAD_SelectRow(uint8_t row)
 {
     KEYPAD_AllRowsLow();
 
@@ -78,7 +78,7 @@ static void KEYPAD_SelectRow(uint8_t row)
             break;
     }
 }
-static int8_t KEYPAD_ReadColumn(void)
+ int8_t KEYPAD_ReadColumn(void)
 {
     if(MY_GPIO_ReadPin(COL1_PORT, COL1_PIN) == gpio_pin_set)
         return 0;
