@@ -42,10 +42,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-
-
-
-
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
