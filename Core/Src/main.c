@@ -24,6 +24,8 @@
 #include "I2c_com.h"
 #include "Uart_com.h"
 #include "Gpio_com.h"
+#include "Timer_com.h"
+
 #include "SRNS.h"
 /* USER CODE END Includes */
 
@@ -43,7 +45,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-
+extern TIM_HandleTypeDef htim6;
 
 
 
@@ -94,8 +96,9 @@ int main(void)
   MY_USART2_UART_Init();
   MY_I2C1_Init();
   MY_USART1_UART_Init();
+  MY_TIM6_Init();
   /* USER CODE BEGIN 2 */
-
+  My_TIM_Base_start();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -109,6 +112,8 @@ int main(void)
   }
   /* USER CODE END 3 */
 }
+
+
 
 /**
   * @brief  This function is executed in case of error occurrence.

@@ -2,14 +2,19 @@
  * Timer_com.h
  *
  *  Created on: Jul 29, 2026
- *      Author: user
+ *      Author: Nikhil
  */
 
 #ifndef INC_TIMER_COM_H_
 #define INC_TIMER_COM_H_
 
 #include "main.h"
- void delay_ms(uint32_t Delay);
 
+
+
+ void delay_ms(uint32_t Delay);
+ void MY_TIM6_Init(void);
+ int soft_delay(volatile uint32_t *prev_tick, uint32_t delay_time);
+ void My_TIM_Base_start(void);
 
 #endif /* INC_TIMER_COM_H_ */

@@ -13,7 +13,12 @@
 /*Application Layer headers*/
 #include "keypad_handler.h"
 
+
+static KEY_STATE_t key_state = KEY_IDLE;
+extern volatile unsigned int system_tick;
+keypad_handler KeypadPress;
 int8_t row, col;
+
 	static const char keypad[4][4] =
 	{
 	    {'1','2','3','A'},
@@ -22,6 +27,7 @@ int8_t row, col;
 	    {'*','0','#','D'}
 	};
 
+
 uint8_t Keypad_Handler(void){
 
 	return KEYPAD_GetKey();
@@ -29,7 +35,91 @@ uint8_t Keypad_Handler(void){
 }
 
 
-char KEYPAD_GetKey(void)
+/*designed for single key detection*/
+uint8_t KEYPAD_GetKey(void)
+{
+    switch(key_state)
+    {
+
+        /* IDLE STATE */
+        case KEY_IDLE:  /*when key not pressed , allowing to scan keypad*/
+
+            for(row = 0; row < 4; row++)
+            {
+                KEYPAD_SelectRow(row);
+
+                col = KEYPAD_ReadColumn();
+
+                if(col != -1)
+                {
+                	KeypadPress.press_row = row;
+                	KeypadPress.press_col = col;
+
+                	KeypadPress.prev_tick = system_tick;
+
+                    key_state = KEY_DEBOUNCE_PRESS;
+
+                    break;
+                }
+            }
+
+            break;
+
+        /* DEBOUNCE STATE */
+        case KEY_DEBOUNCE_PRESS: /*when any key pressed , changed idle state to keydebouncepress state , 20 ms elapsed for debounce*/
+
+            if(soft_delay(&KeypadPress.prev_tick,20))
+            {
+                KEYPAD_SelectRow(KeypadPress.press_row);
+
+                if(KEYPAD_ReadColumn() == KeypadPress.press_col) /*checking same key pressed during this time , if not debounce goes to else condition set to idle*/
+                {
+                    key_state = KEY_PRESSED;
+                }
+                else
+                {
+                    key_state = KEY_IDLE;
+                }
+            }
+
+            break;
+
+        /* KEY PRESSED */
+        case KEY_PRESSED: /*after debounce , changed to key_pressed state here setting state to keywait_for_relese state and returning key only once avoiding repeated scan*/
+
+            key_state = KEY_WAIT_RELEASE;
+
+            return keypad[KeypadPress.press_row][KeypadPress.press_col];
+
+        /* WAIT UNTIL RELEASE */
+        case KEY_WAIT_RELEASE: /*purely waiting to relese the key and checking during this it is purely checking first pressed key to relese*/
+        					   /*while press and hold first key if we pressed any other key  keypad_isanykeypressed () will not detect this press */
+        						/*while holding 2nd key if we relese 1st key then this condition becomes true*/
+            if(KEYPAD_IsSameKeyPressed(KeypadPress.press_row, KeypadPress.press_col ) == 0)
+            {
+                key_state = KEY_IDLE;
+            }
+
+            break;
+    }
+
+    return 0;
+}
+uint8_t KEYPAD_IsSameKeyPressed(uint8_t row, uint8_t col )
+{
+
+
+    KEYPAD_SelectRow(row);
+
+        if(KEYPAD_ReadColumn() == col)
+        {
+            return 1;   // Same key is still pressed
+        }
+
+        return 0;                // No key is pressed
+}
+/*
+uint8_t KEYPAD_GetKey(void)
 {
 
     for(row = 0; row < 4; row++)
@@ -42,7 +132,7 @@ char KEYPAD_GetKey(void)
         {
         	delay_ms(20);      //Debounce
 
-            while(KEYPAD_ReadColumn() != -1);
+            while(KEYPAD_ReadColumn() != -1);//This prevents repeated characters while the key is held.
 
             return keypad[row][col];
         }
@@ -50,6 +140,7 @@ char KEYPAD_GetKey(void)
 
     return 0;
 }
+*/
  void KEYPAD_AllRowsLow(void)
 {
     MY_GPIO_WritePin(ROW1_PORT, ROW1_PIN, gpio_pin_reset);
