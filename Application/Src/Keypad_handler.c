@@ -44,67 +44,88 @@ uint8_t KEYPAD_GetKey(void)
         /* IDLE STATE */
         case KEY_IDLE:  /*when key not pressed , allowing to scan keypad*/
 
-            for(row = 0; row < 4; row++)
-            {
-                KEYPAD_SelectRow(row);
+								for(row = 0; row < 4; row++)
+								{
+									KEYPAD_SelectRow(row);
 
-                col = KEYPAD_ReadColumn();
+									col = KEYPAD_ReadColumn();
 
-                if(col != -1)
-                {
-                	KeypadPress.press_row = row;
-                	KeypadPress.press_col = col;
+									if(col != -1)
+									{
+										KeypadPress.press_row = row;
+										KeypadPress.press_col = col;
 
-                	KeypadPress.prev_tick = system_tick;
+										KeypadPress.prev_tick = system_tick;
 
-                    key_state = KEY_DEBOUNCE_PRESS;
+										key_state = KEY_DEBOUNCE_PRESS;
 
-                    break;
-                }
-            }
+										break;
+									}
+								}
 
-            break;
+								break;
 
         /* DEBOUNCE STATE */
         case KEY_DEBOUNCE_PRESS: /*when any key pressed , changed idle state to keydebouncepress state , 20 ms elapsed for debounce*/
 
-            if(soft_delay(&KeypadPress.prev_tick,20))
-            {
-                KEYPAD_SelectRow(KeypadPress.press_row);
+								if(soft_delay(&KeypadPress.prev_tick,20))
+								{
+									KEYPAD_SelectRow(KeypadPress.press_row);
 
-                if(KEYPAD_ReadColumn() == KeypadPress.press_col) /*checking same key pressed during this time , if not debounce goes to else condition set to idle*/
-                {
-                    key_state = KEY_PRESSED;
-                }
-                else
-                {
-                    key_state = KEY_IDLE;
-                }
-            }
+									if(KEYPAD_ReadColumn() == KeypadPress.press_col) /*checking same key pressed during this time , if not debounce goes to else condition set to idle*/
+									{
+										key_state = KEY_PRESSED;
+									}
+									else
+									{
+										key_state = KEY_IDLE;
+									}
+								}
 
-            break;
+								break;
 
         /* KEY PRESSED */
         case KEY_PRESSED: /*after debounce , changed to key_pressed state here setting state to keywait_for_relese state and returning key only once avoiding repeated scan*/
 
-            key_state = KEY_WAIT_RELEASE;
+									key_state = KEY_WAIT_RELEASE;
 
-            return keypad[KeypadPress.press_row][KeypadPress.press_col];
+									return keypad[KeypadPress.press_row][KeypadPress.press_col];
 
         /* WAIT UNTIL RELEASE */
-        case KEY_WAIT_RELEASE: /*purely waiting to relese the key and checking during this it is purely checking first pressed key to relese*/
+        case KEY_WAIT_RELEASE: /*purely waiting to release the key and checking during this it is purely checking first pressed key to relese*/
         					   /*while press and hold first key if we pressed any other key  keypad_isanykeypressed () will not detect this press */
         						/*while holding 2nd key if we relese 1st key then this condition becomes true*/
-            if(KEYPAD_IsSameKeyPressed(KeypadPress.press_row, KeypadPress.press_col ) == 0)
-            {
-                key_state = KEY_IDLE;
-            }
 
-            break;
+								if(KEYPAD_IsSameKeyPressed(KeypadPress.press_row, KeypadPress.press_col ) == 0)
+								{
+									KeypadPress.prev_tick = system_tick;
+									key_state = KEY_DEBOUNCE_RELEASE;
+								}
+
+								break;
+
+
+        case KEY_DEBOUNCE_RELEASE:	if(soft_delay(&KeypadPress.prev_tick,20))
+									{
+										   if(KEYPAD_IsSameKeyPressed(KeypadPress.press_row,
+																		  KeypadPress.press_col))
+												{
+													/* Release was not stable (bounce) */
+													key_state = KEY_WAIT_RELEASE;
+												}
+												else
+												{
+													/* Release confirmed */
+													key_state = KEY_IDLE;
+												}
+									}
+
+									break;
     }
 
     return 0;
 }
+
 uint8_t KEYPAD_IsSameKeyPressed(uint8_t row, uint8_t col )
 {
 
