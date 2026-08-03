@@ -10,33 +10,33 @@
 
 
 /* Rows */
-#define ROW1_PORT    GPIOA
-#define ROW1_PIN     GPIO_PIN_0
+#define  KEYPAD_ROW1_PORT 		 GPIOA
+#define  KEYPAD_ROW1_PIN     	 GPIO_PIN_0
 
-#define ROW2_PORT    GPIOA
-#define ROW2_PIN     GPIO_PIN_1
+#define KEYPAD_ROW2_PORT  		 GPIOA
+#define KEYPAD_ROW2_PIN     	 GPIO_PIN_1
 
-#define ROW3_PORT    GPIOA
-#define ROW3_PIN     GPIO_PIN_4
+#define KEYPAD_ROW3_PORT    	 GPIOA
+#define KEYPAD_ROW3_PIN     	 GPIO_PIN_4
 
-#define ROW4_PORT    GPIOA
-#define ROW4_PIN     GPIO_PIN_5
+#define KEYPAD_ROW4_PORT       	 GPIOA
+#define KEYPAD_ROW4_PIN     	 GPIO_PIN_5
 
 
 
 
 /* Columns */
-#define COL1_PORT    GPIOB
-#define COL1_PIN     GPIO_PIN_0
+#define KEYPAD_COL1_PORT    	 GPIOB
+#define KEYPAD_COL1_PIN     	 GPIO_PIN_0
 
-#define COL2_PORT    GPIOB
-#define COL2_PIN     GPIO_PIN_1
+#define KEYPAD_COL2_PORT    	 GPIOB
+#define KEYPAD_COL2_PIN     	 GPIO_PIN_1
 
-#define COL3_PORT    GPIOB
-#define COL3_PIN     GPIO_PIN_2
+#define KEYPAD_COL3_PORT    	 GPIOB
+#define KEYPAD_COL3_PIN     	 GPIO_PIN_2
 
-#define COL4_PORT    GPIOB
-#define COL4_PIN     GPIO_PIN_4
+#define KEYPAD_COL4_PORT    	 GPIOB
+#define KEYPAD_COL4_PIN     	 GPIO_PIN_4
 
 typedef enum
 {
@@ -59,12 +59,12 @@ typedef enum
 
 typedef GPIO_TypeDef      gpio_typedef;
 
-
+/* GPIO APIs */
 gpio_pinstate MY_GPIO_ReadPin(gpio_typedef* GPIOx, uint16_t GPIO_Pin);
 void MY_GPIO_WritePin(gpio_typedef* GPIOx, uint16_t GPIO_Pin, gpio_pinstate PinState);
 
 
-
+/* System APIs */
 void MY_GPIO_Init(void);
 void MY_SystemClock_Config(void);
 
